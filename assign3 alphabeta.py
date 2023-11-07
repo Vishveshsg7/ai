@@ -52,3 +52,5 @@ for i in range(0,2**depth_limit):
    values.append(value)
 
 print("The optimal value is :", minimax(0, depth_limit, 0, True, values, MIN, MAX))
+
+#3569120-1
