@@ -1,42 +1,39 @@
-class Graph():
-    def __init__(self,vertices):
-        self.v = vertices
-        self.graph = [[0 for column in range(vertices)]for row in range(vertices)]
-   
-    def isSafe(self, v, color, c):
-        for i in range(self.v):
-            if self.graph[v][i] == 1 and color[i] == c:
-                return False
+def is_safe(graph,v,pos,c):
+    for i in range(len(graph)):
+        if graph[v][i]==1 and pos[i] == c:
+            return False
+
+    return True
+
+def graph_coloring(graph,m,v,pos):
+    if v == len(graph):
         return True
     
-    def graphColorUtil(self, m, color, v):
-        if v == self.v:
-            return True
-        for c in range(1,m+1):
-            if self.isSafe(v, color, c)==True:
-                color[v]=c
-                if self.graphColorUtil(m, color, v+1) == True:
-                    return True
-                colour[v]=0
-    def graphColoring(self,m):
-        color = [0]*self.v
-        if self.graphColorUtil(m, color, 0)==None:
-            return False
-     
-        print("Solution exists and the following are the assigned colors: ")
-        for c in color:
-            print(c, end=' ')
-        return True
+    for c in range(1,m+1):
+        if is_safe(graph,v,pos,c):
+            pos[v]=c
+            if graph_coloring(graph,m,v+1,pos):
+                return True
+            pos[v]=0
+
+    return False
+
+def graph_solution(graph,m):
+    pos = [0] * len(graph)
+    if not graph_coloring(graph,m,0,pos):
+        print("Solution does not exist")
+    else:
+        print("Solution exists:",pos)
 
 if __name__ == '__main__':
-    vertices = int(input("Enter the number of vertices: "))
-    graph = []
-    print("Enter the adjacency matrix: ")
-    for i in range(vertices):
-        temp = list(map(int,input().split()))
-        graph.append(temp)
-    g = Graph(vertices)
-    g.graph = graph
-    m=3
-   
-    g.graphColoring(m)
+    no_of_vertices=int(input("Enter the numbe of vertices"))
+
+    graph=[]
+    print("ENter the vlaues for graph 1 for connected and 0 for not connected")
+    for _ in range(no_of_vertices):
+        row = list(map(int,input().split()))
+        graph.append(row)
+
+    no_of_colors=int(input("Enter the number of colors:"))
+
+    graph_solution(graph,no_of_colors)
