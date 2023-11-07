@@ -1,59 +1,61 @@
-no_of_nodes = int(input("Enter number of nodes: "))
+no_of_nodes = int(input("Enter the number of nodes: "))
 
 graph = {}
 
 for i in range(no_of_nodes):
-    node = input("Enter node name: ")
+    node = input("Enter the node name: ")
     graph[node] = []
-    no_of_neighb = int(input("Enter number of neighbours: "))
+    no_of_neighbours = int(input("Enter the number of neighbors: "))
     lst = []
-    for j in range(no_of_neighb):
-        neighbour = input("Enter neighbour: ")
+    for j in range(no_of_neighbours):
+        neighbour = input("Enter the neighbor: ")
         lst.append(neighbour)
     graph[node] = lst
-    
+
 print(graph)
 
 visited = set()
 
-def dfs(graph,vertex,visited):
+def dfs(graph, vertex, visited, goal):
     if vertex not in visited:
         visited.add(vertex)
         print(vertex)
-        for neighbour in graph[vertex]:
-            dfs(graph,neighbour,visited)
-            
-v = input("Enter vertex name: ")
+        if vertex == goal:
+            print("Goal node reached:", goal)
+            return True
+        for neighbor in graph[vertex]:
+            if dfs(graph, neighbor, visited, goal):
+                return True
+    return False
 
-if v in graph:
-    dfs(graph,v,visited)
+visited1 = set()
 
-
-
-################################################
-
-graph = {
-    '1' : ['2'],
-    '2' : ['1','3','4'],
-    '3' : ['2','5'],
-    '4' : ['2'],
-    '5' : ['3']
-}
-
-visited = set()
-
-def bfs(graph,vertex,visited):
-    visited.add(vertex)
+def bfs(graph, vertex, visited1, goal):
+    visited1.add(vertex)
     queue = []
     queue.append(vertex)
-    
+
     while queue:
         v = queue.pop(0)
         print(v)
-        
-        for neighbour in graph[v]:
-            if neighbour not in visited:
-                visited.add(neighbour)
-                queue.append(neighbour)
+        if v == goal:
+            print("Goal node reached:", goal)
+            return True
+        for neighbor in graph[v]:
+            if neighbor not in visited1:
+                visited1.add(neighbor)
+                queue.append(neighbor)
 
-bfs(graph,'4',visited)
+v = input("Enter the starting vertex name: ")
+goal_node = input("Enter the goal node name: ")
+
+if v in graph:
+    print("DFS:")
+    if not dfs(graph, v, visited, goal_node):
+        print("Goal node not found starting from node:", v)
+
+    print("BFS:")
+    if not bfs(graph, v, visited1, goal_node):
+        print("Goal node not found starting from node:", v)
+else:
+    print("Starting vertex not found in the graph.")
